@@ -25,5 +25,3 @@ def move(p, U):
     return q
 
 print move(p, 1)
-
-
