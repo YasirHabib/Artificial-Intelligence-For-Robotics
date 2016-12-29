@@ -49,6 +49,17 @@ def localize(colors,measurements,motions,sensor_right,p_move):
     p = [[pinit for row in range(len(colors[0]))] for col in range(len(colors))]
     q=[]
     # >>> Insert your code here <<<
+    for i in range(len(motions)):
+        for j in range(len(p)):
+            for k in range(len(p[0])):
+                if motions[i] == [0, 1]:
+                    p[j][k] = p[j][k-1] * p_move + p[j][k-1-1] * (1-p_move)
+                    
+                elif motions[i] == [0, -1]:
+                    p[j][k-1] * p_move + p[j][k-1-1] * (1-p_move))
+                    #p.insert([j][k], p[j][k-1] * p_move + p[j][k-1-1] * (1-p_move))
+            
+
     for i in range(len(measurements)):
         s = 0
         for j in range(len(p)):
@@ -81,7 +92,7 @@ colors = [['R','G','G','R','R'],
           ['R','R','G','R','R'],
           ['R','R','G','G','R'],
           ['R','R','R','R','R']]
-measurements = ['G', 'G', 'G', 'G']
+measurements = ['G', 'G', 'G', 'G', 'G']
 motions = [[0,0],[0,1],[1,0],[1,0],[0,1]]
 p = localize(colors,measurements,motions,sensor_right = 0.7, p_move = 0.8)
 show(p) # displays your answer
