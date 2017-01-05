@@ -27,7 +27,7 @@ def sense(p, Z):
 def move(p, U):
     q = []
     for i in range(len(p)):
-        q.insert(i, p[i-U] * pExact + p[i-U+1] * pOvershoot + p[i-U-1] * pUndershoot)
+        q.insert(i, p[i-U] * pExact + p[i-U-1] * pOvershoot + p[i-U+1] * pUndershoot)
     return q
 #
 for k in range(len(motions)):
