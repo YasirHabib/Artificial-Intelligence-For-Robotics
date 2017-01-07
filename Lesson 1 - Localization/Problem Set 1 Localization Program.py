@@ -47,35 +47,54 @@ def localize(colors,measurements,motions,sensor_right,p_move):
     # initializes p to a uniform distribution over a grid of the same dimensions as colors
     pinit = 1.0 / float(len(colors)) / float(len(colors[0]))
     p = [[pinit for row in range(len(colors[0]))] for col in range(len(colors))]
-    q=[]
     # >>> Insert your code here <<<
-    for i in range(len(motions)):
+    
+        
+    def move(p, U):
+        aux = [[0.0 for row in range(len(p[0]))] for col in range(len(p))]
+        
         for j in range(len(p)):
             for k in range(len(p[0])):
-                if motions[i] == [0, 1]:
-                    p[j][k] = p[j][k-1] * p_move + p[j][k-1-1] * (1-p_move)
-                    
-                elif motions[i] == [0, -1]:
-                    p[j][k-1] * p_move + p[j][k-1-1] * (1-p_move))
-                    #p.insert([j][k], p[j][k-1] * p_move + p[j][k-1-1] * (1-p_move))
-            
+                if U == [0, 0]:
+                    aux[j][k] = p[j][k] * p_move + p[j][k] * (1-p_move)
 
-    for i in range(len(measurements)):
+                elif U == [0, 1]:
+                    aux[j][k] = p[j][k-1] * p_move + p[j][k] * (1-p_move)
+                    
+                elif U == [0, -1]:
+                    aux[j][k] = p[j][(k+1) % len(p[0])] * p_move + p[j][k] * (1-p_move)
+                
+                elif U == [1, 0]:
+                    aux[j][k] = p[j-1][k] * p_move + p[j][k] * (1-p_move)
+                    
+                elif U == [-1, 0]:
+                    aux[j][k] = p[(j+1) % len(p)][k] * p_move + p[j][k] * (1-p_move)
+        
+        return aux
+        
+    def sense(p, Z):
         s = 0
         for j in range(len(p)):
             for k in range(len(p[0])):
-                if measurements[i] == colors[j][k]:
+                if Z == colors[j][k]:
                     p[j][k] = p[j][k] * sensor_right
                 else:
                     p[j][k] = p[j][k] * (1-sensor_right)
+                        
                 s = s + p[j][k]
      
-    for j in range(len(p)):
+        for j in range(len(p)):
             for k in range(len(p[0])):
                 p[j][k] = p[j][k] / s
 
+        return p
+    
+    for i in range(len(measurements)):
+        p = move(p, motions[i])
+        p = sense(p, measurements[i])        
+    
     return p
-
+    
 def show(p):
     rows = ['[' + ','.join(map(lambda x: '{0:.5f}'.format(x),r)) + ']' for r in p]
     print '[' + ',\n '.join(rows) + ']'
