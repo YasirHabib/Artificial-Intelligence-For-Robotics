@@ -112,6 +112,7 @@ p = []
 
 #enter code here
 for i in range(N):
-    p.insert(i,i)
+    z = robot()
+    p.insert(i,z)
 
 print len(p)
