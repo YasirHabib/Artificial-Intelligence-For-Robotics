@@ -139,6 +139,27 @@ class robot:
     # according to the noise parameters
     #           self.steering_noise
     #           self.distance_noise
+    def move(self, motion): # Do not change the name of this function
+
+        # ADD CODE HERE
+        result = robot()
+        result.length = self.length
+        result.bearing_noises = self.bearing_noise
+        result.steering_noise = self.steering_noise
+        result.distance_noise = self.distance_noise
+        
+        beta = (motion[1] / result.length) * tan(motion[0])
+        R = motion[1] / beta
+        
+        Cx = self.x - (sin(self.orientation) * R)
+        Cy = self.y + (cos(self.orientation) * R)
+        
+        result.x = Cx + (sin(self.orientation + beta) * R)
+        result.y = Cy - (cos(self.orientation + beta) * R)
+        result.orientation = (self.orientation + beta) % (2 * pi)
+        
+        return result # make sure your move function returns an instance
+                      # of the robot class with the correct coordinates.
 
     # --------
     # sense: 
@@ -148,6 +169,20 @@ class robot:
     # and modify it so that it simulates bearing noise
     # according to
     #           self.bearing_noise
+    
+    def sense(self): #do not change the name of this function
+        Z = []
+
+        # ENTER CODE HERE
+        # HINT: You will probably need to use the function atan2()
+        for i in landmarks:
+            delta_y = i[0] - self.y
+            delta_x = i[1] - self.x
+            bearing = atan2(delta_y, delta_x) - self.orientation
+            bearing = bearing % (2.0 * pi)
+            Z.append(bearing)
+
+        return Z #Leave this line here. Return vector Z of 4 bearings.
 
     ############## ONLY ADD/MODIFY CODE ABOVE HERE ####################
 
