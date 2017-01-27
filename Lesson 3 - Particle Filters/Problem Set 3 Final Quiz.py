@@ -140,24 +140,33 @@ class robot:
     #           self.steering_noise
     #           self.distance_noise
     def move(self, motion): # Do not change the name of this function
+        
 
         # ADD CODE HERE
         result = robot()
         result.length = self.length
-        result.bearing_noises = self.bearing_noise
-        result.steering_noise = self.steering_noise
-        result.distance_noise = self.distance_noise
+        
+        motion[0] = random.gauss(motion[0], self.steering_noise)
+        motion[1] = random.gauss(motion[1], self.distance_noise)
         
         beta = (motion[1] / result.length) * tan(motion[0])
-        R = motion[1] / beta
         
-        Cx = self.x - (sin(self.orientation) * R)
-        Cy = self.y + (cos(self.orientation) * R)
+        if abs(beta) < 0.001:
+            result.x = self.x + (motion[1] * cos(self.orientation))
+            result.y = self.y + (motion[1] * sin(self.orientation))
+            result.orientation = (self.orientation + beta) % (2 * pi)
+            
+        else:
+            R = motion[1] / beta
         
-        result.x = Cx + (sin(self.orientation + beta) * R)
-        result.y = Cy - (cos(self.orientation + beta) * R)
-        result.orientation = (self.orientation + beta) % (2 * pi)
+            Cx = self.x - (sin(self.orientation) * R)
+            Cy = self.y + (cos(self.orientation) * R)
         
+            result.x = Cx + (sin(self.orientation + beta) * R)
+            result.y = Cy - (cos(self.orientation + beta) * R)
+            result.orientation = (self.orientation + beta) % (2 * pi)
+        
+        result.set_noise(self.bearing_noise, self.steering_noise, self.distance_noise)
         return result # make sure your move function returns an instance
                       # of the robot class with the correct coordinates.
 
@@ -170,7 +179,7 @@ class robot:
     # according to
     #           self.bearing_noise
     
-    def sense(self): #do not change the name of this function
+    def sense(self, add_noise = 1): #do not change the name of this function
         Z = []
 
         # ENTER CODE HERE
@@ -179,6 +188,10 @@ class robot:
             delta_y = i[0] - self.y
             delta_x = i[1] - self.x
             bearing = atan2(delta_y, delta_x) - self.orientation
+            
+            if add_noise:
+                bearing = bearing + random.gauss(0.0, self.bearing_noise)
+                
             bearing = bearing % (2.0 * pi)
             Z.append(bearing)
 
