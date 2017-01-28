@@ -55,7 +55,7 @@ def search(grid,init,goal,cost):
         else:
             if len(current_state) == 0:
                 path = False
-                print 'Destination not reachable'
+                return 'fail'
             else:
                 current_state.sort()
                 current_state.reverse()
