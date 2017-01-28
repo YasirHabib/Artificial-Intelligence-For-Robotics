@@ -49,22 +49,22 @@ def search(grid,init,goal,cost):
     
     while destination and path:
         
-        current_state.sort()
-        current_state.reverse()
-        index_n = current_state.pop()
-        
-        g = index_n[0]
-        cell_h = index_n[1]
-        cell_v = index_n[2]
-        
         if (cell_h == goal[0] and cell_v == goal[1]):
             destination = False
         
         else:
             if len(current_state) == 0:
                 path = False
-                #print 'Destination not reachable'
+                print 'Destination not reachable'
             else:
+                current_state.sort()
+                current_state.reverse()
+                index_n = current_state.pop()
+        
+                g = index_n[0]
+                cell_h = index_n[1]
+                cell_v = index_n[2]
+                
                 for i in delta:
                     cell_h_n = cell_h + i[0]
                     cell_v_n = cell_v + i[1]
