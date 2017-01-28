@@ -35,5 +35,33 @@ def search(grid,init,goal,cost):
     # ----------------------------------------
     # insert code here
     # ----------------------------------------
-
+    destination = True
+    
+    state = [[0 for row in range(len(grid[0]))] for col in range(len(grid))]
+    state[0][0] = 1
+    
+    cell_h = init[0]
+    cell_v = init[1]
+    g = 0
+    
+    current_state = [g, cell_h, cell_v]
+    
+    while destination:
+        
+        if (cell_h == goal[0] and cell_v == goal[1]):
+            destination = False
+    
+        else:
+            for i in delta:
+                cell_h_n = cell_h + i[0]
+                cell_v_n = cell_v + i[1]
+                if (cell_h_n >= 0 and cell_h_n < len(state)) and (cell_v_n >= 0 and cell_v_n < len(state[0])):
+                    if grid[cell_h_n][cell_v_n] == 0:
+                        state[cell_h][cell_v] = 1
+                        g_n = g + cost
+                        current_state.append([g_n, cell_h_n, cell_v_n])
+            
+            
+    
+    
     return path
