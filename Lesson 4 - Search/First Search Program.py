@@ -48,6 +48,14 @@ def search(grid,init,goal,cost):
     
     while destination:
         
+        current_state.sort()
+        current_state.reverse()
+        index = current_state.pop()
+        
+        g = index[0]
+        cell_h = index[1]
+        cell_v = index[2]
+        
         if (cell_h == goal[0] and cell_v == goal[1]):
             destination = False
     
@@ -56,12 +64,11 @@ def search(grid,init,goal,cost):
                 cell_h_n = cell_h + i[0]
                 cell_v_n = cell_v + i[1]
                 if (cell_h_n >= 0 and cell_h_n < len(state)) and (cell_v_n >= 0 and cell_v_n < len(state[0])):
-                    if grid[cell_h_n][cell_v_n] == 0:
-                        state[cell_h][cell_v] = 1
+                    if state[cell_h_n][cell_v_n] == 0 and grid[cell_h_n][cell_v_n] == 0:
                         g_n = g + cost
                         current_state.append([g_n, cell_h_n, cell_v_n])
+                        state[cell_h][cell_v] = 1
             
-            
-    
-    
-    return path
+    return current_state
+
+print search(grid,init,goal,cost)
