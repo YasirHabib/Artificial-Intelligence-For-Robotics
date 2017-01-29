@@ -49,6 +49,9 @@ def search(grid,init,goal,cost):
     while not found and not resign:
         if len(open) == 0:
             resign = True
+            for i in range(len(grid[0])):
+                if [row[i] for row in expand] == -1:
+                    expand = [[-1 for row in range(len(grid[0]) - len(grid[i]))] for col in range(len(grid))]
         else:
             open.sort()
             open.reverse()
