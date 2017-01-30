@@ -33,7 +33,8 @@ def search(grid,init,goal,cost):
     closed = [[0 for row in range(len(grid[0]))] for col in range(len(grid))]
     closed[init[0]][init[1]] = 1
     
-    expand = [[0 for row in range(len(grid[0]))] for col in range(len(grid))]
+    expand = [[-1 for row in range(len(grid[0]))] for col in range(len(grid))]
+    expand[init[0]][init[1]] = 0
     
     x = init[0]
     y = init[1]
@@ -49,9 +50,7 @@ def search(grid,init,goal,cost):
     while not found and not resign:
         if len(open) == 0:
             resign = True
-            for i in range(len(grid[0])):
-                if [row[i] for row in expand] == -1:
-                    expand = [[-1 for row in range(len(grid[0]) - len(grid[i]))] for col in range(len(grid))]
+
         else:
             open.sort()
             open.reverse()
@@ -73,8 +72,6 @@ def search(grid,init,goal,cost):
                             closed[x2][y2] = 1
                             expand[x2][y2] = counter + 1
                             counter = expand[x2][y2]
-                        elif grid[x2][y2] == 1:
-                            expand[x2][y2] = -1
                         
     return expand
 
