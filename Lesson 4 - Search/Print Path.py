@@ -1,13 +1,21 @@
 # -----------
 # User Instructions:
-# 
-# Modify the function search so that it returns
-# a table of values called expand. This table
-# will keep track of which step each node was
-# expanded.
 #
-# Make sure that the initial cell in the grid 
-# you return has the value 0.
+# Modify the the search function so that it returns
+# a shortest path as follows:
+# 
+# [['>', 'v', ' ', ' ', ' ', ' '],
+#  [' ', '>', '>', '>', '>', 'v'],
+#  [' ', ' ', ' ', ' ', ' ', 'v'],
+#  [' ', ' ', ' ', ' ', ' ', 'v'],
+#  [' ', ' ', ' ', ' ', ' ', '*']]
+#
+# Where '>', '<', '^', and 'v' refer to right, left, 
+# up, and down motions. Note that the 'v' should be 
+# lowercase. '*' should mark the goal cell.
+#
+# You may assume that all test cases for this function
+# will have a path from init to goal.
 # ----------
 
 grid = [[0, 0, 1, 0, 0, 0],
@@ -19,10 +27,10 @@ init = [0, 0]
 goal = [len(grid)-1, len(grid[0])-1]
 cost = 1
 
-delta = [[-1, 0], # go up
-         [ 0,-1], # go left
-         [ 1, 0], # go down
-         [ 0, 1]] # go right
+delta = [[-1, 0 ], # go up
+         [ 0, -1], # go left
+         [ 1, 0 ], # go down
+         [ 0, 1 ]] # go right
 
 delta_name = ['^', '<', 'v', '>']
 
@@ -32,16 +40,11 @@ def search(grid,init,goal,cost):
     # ----------------------------------------
     closed = [[0 for row in range(len(grid[0]))] for col in range(len(grid))]
     closed[init[0]][init[1]] = 1
-    
-    expand = [[-1 for row in range(len(grid[0]))] for col in range(len(grid))]
-    expand[init[0]][init[1]] = 0
-    
+
     x = init[0]
     y = init[1]
     g = 0
-    
-    counter = 0    # counter
-    
+
     open = [[g, x, y]]
 
     found = False  # flag that is set when search is complete
@@ -50,7 +53,7 @@ def search(grid,init,goal,cost):
     while not found and not resign:
         if len(open) == 0:
             resign = True
-
+            return 'fail'
         else:
             open.sort()
             open.reverse()
@@ -70,9 +73,5 @@ def search(grid,init,goal,cost):
                             g2 = g + cost
                             open.append([g2, x2, y2])
                             closed[x2][y2] = 1
-                            expand[x2][y2] = counter + 1
-                            counter = expand[x2][y2]
-                        
-    return expand
 
-print search(grid,init,goal,cost)
+    return expand # make sure you return the shortest path
