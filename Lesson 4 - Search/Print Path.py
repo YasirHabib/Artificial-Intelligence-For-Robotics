@@ -9,11 +9,7 @@
 #  [' ', ' ', ' ', ' ', ' ', 'v'],
 #  [' ', ' ', ' ', ' ', ' ', 'v'],
 #  [' ', ' ', ' ', ' ', ' ', '*']]
-# [['>', 'v', ' ', ' ', ' ', ' '],
-#  [' ', '>', '>', '>', '>', 'v'],
-#  [' ', ' ', ' ', ' ', ' ', 'v'],
-#  [' ', ' ', ' ', ' ', ' ', 'v'],
-#  [' ', ' ', ' ', ' ', ' ', '*']]
+
 #
 # Where '>', '<', '^', and 'v' refer to right, left, 
 # up, and down motions. Note that the 'v' should be 
@@ -80,3 +76,4 @@ def search(grid,init,goal,cost):
                             closed[x2][y2] = 1
 
     return expand # make sure you return the shortest path
+print expand
