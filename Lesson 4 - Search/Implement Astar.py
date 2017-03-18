@@ -82,3 +82,5 @@ def search(grid,init,goal,cost,heuristic):
                             closed[x2][y2] = 1
 
     return expand
+
+print search(grid,init,goal,cost,heuristic)
