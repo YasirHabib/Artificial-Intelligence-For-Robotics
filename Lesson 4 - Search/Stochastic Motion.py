@@ -38,7 +38,61 @@ def stochastic_value(grid,goal,cost_step,collision_cost,success_prob):
     failure_prob = (1.0 - success_prob)/2.0 # Probability(stepping left) = prob(stepping right) = failure_prob
     value = [[collision_cost for col in range(len(grid[0]))] for row in range(len(grid))]
     policy = [[' ' for col in range(len(grid[0]))] for row in range(len(grid))]
+    change = True
     
+    while change:
+        change = False
+        for x in range(len(grid)):
+            for y in range(len(grid[0])):
+                if goal[0] == x and goal[1] == y:
+                    if value[x][y] > 0:
+                        value[x][y] = 0.0
+                        policy[x][y] = "*"
+                        change = True
+                elif grid[x][y] == 0:
+                    for a in range(len(delta)):
+                        x2 = x + delta[a][0]
+                        y2 = y + delta[a][1]
+                        if x2 >= 0 and x2 < len(grid) and y2 >= 0 and y2 < len(grid[0]):
+                            v2 = cost_step
+                            
+                            forward = delta[a]
+                            left = delta[(a + 1) % 4]
+                            right = delta[(a - 1) % 4]
+                            
+                            directions = [forward, left, right]
+                            
+                            for i in range(len(directions)):
+                                x2 = x + directions[i][0]
+                                y2 = y + directions[i][1]
+                                
+                                if (i == 0):
+                                    if x2 >= 0 and x2 < len(grid) and y2 >= 0 and y2 < len(grid[0]):
+                                        v2 += success_prob * value[x2][y2]
+                                    else:
+                                        v2 += success_prob * float(collision_cost)
+                                elif (i == 1):
+                                    if x2 >= 0 and x2 < len(grid) and y2 >= 0 and y2 < len(grid[0]):
+                                        v2 += failure_prob * value[x2][y2]
+                                    else:
+                                        v2 += failure_prob * float(collision_cost)
+                                elif (i == 2):
+                                    if x2 >= 0 and x2 < len(grid) and y2 >= 0 and y2 < len(grid[0]):
+                                        v2 += failure_prob * value[x2][y2]
+                                    else:
+                                        v2 += failure_prob * float(collision_cost)
+                            #value[x][y] = v2
+                            if v2 < value[x][y]:
+                                change = True
+                                policy[x][y] = delta_name[a]                                
+                                value[x][y] = v2
+                                
+                                
+                                
+    # for i in range(len(value)):
+    #     print value[i]
+    # print " "
+
     return value, policy
 
 # ---------------------------------------------
