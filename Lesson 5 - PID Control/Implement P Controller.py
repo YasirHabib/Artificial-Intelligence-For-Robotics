@@ -122,10 +122,10 @@ def run(robot, tau, n=100, speed=1.0):
     
     # TODO: your code here
     for i in range(n):
+        steer = -tau * robot.y
+        robot = robot.move(steer,speed)
         x_trajectory.insert(i, robot.x)
         y_trajectory.insert(i, robot.y)
-        steer = -tau * y_trajectory[i]
-        robot = robot.move(steer,speed)
         
     return x_trajectory, y_trajectory
     
