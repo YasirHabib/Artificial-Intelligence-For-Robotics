@@ -30,11 +30,12 @@ def smooth(path, fix, weight_data = 0.0, weight_smooth = 0.1, tolerance = 0.0000
     while total_change >= tolerance:
         total_change = 0.0
         for i in range(len(path)):
-            for j in range(len(path[0])):
-                initial_value = newpath[i][j]
-                newpath[i][j] += weight_smooth * (newpath[(i+1) % len(path)][j] + newpath[(i-1) % len(path)][j] - 2.0 * newpath[i][j]) + \
-                                 0.5 * weight_smooth * (2 * (newpath[(i-1) % len(path)][j]) - newpath[(i-2) % len(path)][j] - newpath[i][j]) + \
-                                 0.5 * weight_smooth * (2 * (newpath[(i+1) % len(path)][j]) - newpath[(i+2) % len(path)][j] - newpath[i][j])
+            if fix[i] == 0:
+                for j in range(len(path[0])):
+                    initial_value = newpath[i][j]
+                    newpath[i][j] += weight_smooth * (newpath[(i+1) % len(path)][j] + newpath[(i-1) % len(path)][j] - 2.0 * newpath[i][j]) + \
+                                    (0.5 * weight_smooth * (2 * (newpath[(i-1) % len(path)][j]) - newpath[(i-2) % len(path)][j] - newpath[i][j])) + \
+                                    (0.5 * weight_smooth * (2 * (newpath[(i+1) % len(path)][j]) - newpath[(i+2) % len(path)][j] - newpath[i][j]))
                 
                 total_change += abs(newpath[i][j] - initial_value)
     return newpath
