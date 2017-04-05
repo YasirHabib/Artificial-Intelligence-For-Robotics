@@ -144,11 +144,11 @@ class robot:
         #
         #
         if self.x < radius:
-            cte = sqrt((radius - self.x) ** 2) + (radius - self.y) ** 2))
+            cte = sqrt(((self.x - radius) ** 2) + ((radius - self.y) ** 2))
+        elif self.x > 3 * radius:
+            cte = cte = sqrt(((self.x - radius) ** 2) + ((self.y - radius) ** 2))
         elif self.y > radius:
             cte = self.y - 2 * radius
-        elif self.x > 3 * radius:
-            cte = cte = sqrt((self.x - radius) ** 2) + (self.y - radius) ** 2))
         else:
             cte = -self.y
         return cte
