@@ -488,9 +488,25 @@ def run(grid, goal, spath, params, printflag = False, speed = 0.1, timeout = 100
 
         # start with the present robot estimate
         estimate = filter.get_position()
-
-        ### ENTER CODE HERE
         
+        ### ENTER CODE HERE
+        beginning_point_x = spath[index][0]
+        beginning_point_y = spath[index][1]
+        
+        ending_point_x = spath[index + 1][0]
+        ending_point_y = spath[index + 1][1]
+        
+        r_x = estimate[0] - beginning_point_x
+        r_y = estimate[1] - beginning_point_y
+        
+        delta_x = ending_point_x - beginning_point_x
+        delta_y = ending_point_y - beginning_point_y
+        
+        u = (r_x * delta_x + r_y * delta_y) / sqrt(delta_x ** 2 + delta_y ** 2)
+        if u > 1.0:
+            index += 1
+        
+        cte = (r_y * delta_x - r_x * delta_y) / sqrt(delta_x ** 2 + delta_y ** 2)
 
         # ----------------------------------------
 
