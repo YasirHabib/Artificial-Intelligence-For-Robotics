@@ -322,22 +322,31 @@ which should return a mu of:
  [5.0]]
 """
 def doit(initial_pos, move1, move2):
+    
     #
     #
     # Add your code here.
     #
     #
-	Omega_ = [[0 for row in range(3)] for col in range(3)]   # 3 x 3 matrix
-	Xi_ = [[0 for row in range(3)] for col in range(3)]   # 3 x 1 matrix
-	
-	Omega_[0][0] = 1
-	Xi_[0][0] = initial_pos
-	
-	Omega = matrix(Omega_)
-	Xi = matrix(Xi_)
+    Omega_ = [[0 for row in range(3)] for col in range(3)]   # 3 x 3 matrix
+    Xi_ = [[0 for row in range(1)] for col in range(3)]   # 3 x 1 matrix
+    
+    Omega_[0][0] = 1
+    Xi_[0][0] = initial_pos
+    
+    Omega = matrix(Omega_)
+    Xi = matrix(Xi_)
+    
+    Omega += matrix([[1, -1, 0], [-1, 1, 0], [0, 0, 0]])
+    Xi += matrix([[- move1], [move1], [0]])
+    
+    Omega += matrix([[0, 0, 0], [0, 1, -1], [0, -1, 1]])
+    Xi += matrix([[0], [- move2], [move2]])
+    
+    Omega = Omega.inverse()
+    
+    mu = Omega * Xi
 	
     return mu
 
 doit(-3, 5, 3)
-
-
