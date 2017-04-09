@@ -327,6 +327,15 @@ def doit(initial_pos, move1, move2):
     # Add your code here.
     #
     #
+	Omega_ = [[0 for row in range(3)] for col in range(3)]   # 3 x 3 matrix
+	Xi_ = [[0 for row in range(3)] for col in range(3)]   # 3 x 1 matrix
+	
+	Omega_[0][0] = 1
+	Xi_[0][0] = initial_pos
+	
+	Omega = matrix(Omega_)
+	Xi = matrix(Xi_)
+	
     return mu
 
 doit(-3, 5, 3)
