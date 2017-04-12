@@ -509,6 +509,62 @@ def slam(data, N, num_landmarks, motion_noise, measurement_noise):
     # Add your code here!
     #
     #
+        Omega = matrix([[1.0, 0.0, 0.0],
+                    [0.0, 0.0, 0.0],
+                    [0.0, 0.0, 0.0]])
+    Xi    = matrix([[initial_pos],
+                    [0.0],
+                    [0.0]])
+
+    Omega += matrix([[1.0, -1.0, 0.0],
+                     [-1.0, 1.0, 0.0],
+                     [0.0, 0.0, 0.0]])
+    Xi    += matrix([[-move1],
+                     [move1],
+                     [0.0]])
+    
+    Omega += matrix([[0.0, 0.0, 0.0],
+                     [0.0, 1.0, -1.0],
+                     [0.0, -1.0, 1.0]])
+    Xi    += matrix([[0.0],
+                     [-move2],
+                     [move2]])
+    
+    Omega = Omega.expand(4, 4, [0, 1, 2], [0, 1, 2])
+    Xi =    Xi.expand(4, 1, [0, 1, 2], [0])
+
+    Omega += matrix([[1.0, 0.0, 0.0, -1.0],
+                     [0.0, 0.0, 0.0, 0.0],
+                     [0.0, 0.0, 0.0, 0.0],
+                     [-1.0, 0.0, 0.0, 1.0]])
+    Xi    += matrix([[-Z0],
+                     [0.0],
+                     [0.0],
+                     [Z0]])
+
+    Omega += matrix([[0.0, 0.0, 0.0, 0.0],
+                     [0.0, 1.0, 0.0, -1.0],
+                     [0.0, 0.0, 0.0, 0.0],
+                     [0.0, -1.0, 0.0, 1.0]])
+    Xi    += matrix([[0.0],
+                     [-Z1],
+                     [0.0],
+                     [Z1]])
+
+    Omega += matrix([[0.0, 0.0, 0.0, 0.0],
+                     [0.0, 0.0, 0.0, 0.0],
+                     [0.0, 0.0, 5.0, -5.0],
+                     [0.0, 0.0, -5.0, 5.0]])
+    Xi    += matrix([[0.0],
+                     [0.0],
+                     [-Z2 * 5],
+                     [Z2 * 5]])
+
+    Omega.show('Omega: ')
+    Xi.show('Xi:    ')
+    mu = Omega.inverse() * Xi
+    mu.show('Mu:    ')
+    
     return mu # Make sure you return mu for grading!
         
 ############### ENTER YOUR CODE ABOVE HERE ###################
