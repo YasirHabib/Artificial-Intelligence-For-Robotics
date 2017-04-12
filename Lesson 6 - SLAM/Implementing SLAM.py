@@ -509,61 +509,19 @@ def slam(data, N, num_landmarks, motion_noise, measurement_noise):
     # Add your code here!
     #
     #
-        Omega = matrix([[1.0, 0.0, 0.0],
-                    [0.0, 0.0, 0.0],
-                    [0.0, 0.0, 0.0]])
-    Xi    = matrix([[initial_pos],
-                    [0.0],
-                    [0.0]])
-
-    Omega += matrix([[1.0, -1.0, 0.0],
-                     [-1.0, 1.0, 0.0],
-                     [0.0, 0.0, 0.0]])
-    Xi    += matrix([[-move1],
-                     [move1],
-                     [0.0]])
+    dimensions = 2 * (N + num_landmarks)
     
-    Omega += matrix([[0.0, 0.0, 0.0],
-                     [0.0, 1.0, -1.0],
-                     [0.0, -1.0, 1.0]])
-    Xi    += matrix([[0.0],
-                     [-move2],
-                     [move2]])
+    Omega = matrix()
+    Xi = matrix()
     
-    Omega = Omega.expand(4, 4, [0, 1, 2], [0, 1, 2])
-    Xi =    Xi.expand(4, 1, [0, 1, 2], [0])
-
-    Omega += matrix([[1.0, 0.0, 0.0, -1.0],
-                     [0.0, 0.0, 0.0, 0.0],
-                     [0.0, 0.0, 0.0, 0.0],
-                     [-1.0, 0.0, 0.0, 1.0]])
-    Xi    += matrix([[-Z0],
-                     [0.0],
-                     [0.0],
-                     [Z0]])
-
-    Omega += matrix([[0.0, 0.0, 0.0, 0.0],
-                     [0.0, 1.0, 0.0, -1.0],
-                     [0.0, 0.0, 0.0, 0.0],
-                     [0.0, -1.0, 0.0, 1.0]])
-    Xi    += matrix([[0.0],
-                     [-Z1],
-                     [0.0],
-                     [Z1]])
-
-    Omega += matrix([[0.0, 0.0, 0.0, 0.0],
-                     [0.0, 0.0, 0.0, 0.0],
-                     [0.0, 0.0, 5.0, -5.0],
-                     [0.0, 0.0, -5.0, 5.0]])
-    Xi    += matrix([[0.0],
-                     [0.0],
-                     [-Z2 * 5],
-                     [Z2 * 5]])
-
-    Omega.show('Omega: ')
-    Xi.show('Xi:    ')
-    mu = Omega.inverse() * Xi
-    mu.show('Mu:    ')
+    Omega.zero(dimensions, dimensions)
+    Omega[0][0] = 1
+    Omega[1][1] = 1
+    
+    Xi.zero(dimensions, 1)
+    Xi[0][0] = 50
+    Xi[0][1] = 50
+    
     
     return mu # Make sure you return mu for grading!
         
