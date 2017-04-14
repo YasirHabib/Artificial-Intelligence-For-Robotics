@@ -524,6 +524,17 @@ def slam(data, N, num_landmarks, motion_noise, measurement_noise):
     
     for i in range(len(data)):
         
+        index = i * 2
+        
+        sense_ = data[i][0]
+        move_  = data[i][1]
+        
+        for j in range(len(sense_)):
+            
+            index_ = 2 * (N + sense_[j][0])
+            
+            Omega.value[i][j] += 
+        
         
     
     
