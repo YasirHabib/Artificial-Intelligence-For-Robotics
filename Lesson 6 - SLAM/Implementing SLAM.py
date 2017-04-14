@@ -515,12 +515,16 @@ def slam(data, N, num_landmarks, motion_noise, measurement_noise):
     Xi = matrix()
     
     Omega.zero(dimensions, dimensions)
-    Omega[0][0] = 1
-    Omega[1][1] = 1
+    Omega.value[0][0] = 1
+    Omega.value[1][1] = 1
     
     Xi.zero(dimensions, 1)
-    Xi[0][0] = 50
-    Xi[0][1] = 50
+    Xi.value[0][0] = 50
+    Xi.value[1][0] = 50
+    
+    for i in range(len(data)):
+        
+        
     
     
     return mu # Make sure you return mu for grading!
