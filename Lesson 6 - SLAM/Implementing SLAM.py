@@ -545,7 +545,7 @@ def slam(data, N, num_landmarks, motion_noise, measurement_noise):
             Omega.value[index + k][index + k] += 1.0 / motion_noise
         for k in range(2):
             Omega.value[index + k][index + k + 2]     += -1.0 / motion_noise
-            Omega.value[index + k +2][index + k]      += -1.0 / motion_noise
+            Omega.value[index + k + 2][index + k]     += -1.0 / motion_noise
             Xi.value[index + k][0]                    += -move_[k] / motion_noise
             Xi.value[index + k + 2][0]                +=  move_[k] / motion_noise
         
