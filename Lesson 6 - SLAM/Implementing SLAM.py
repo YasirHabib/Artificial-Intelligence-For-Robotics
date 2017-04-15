@@ -533,11 +533,23 @@ def slam(data, N, num_landmarks, motion_noise, measurement_noise):
             
             index_ = 2 * (N + sense_[j][0])
             
-            Omega.value[i][j] += 
+            for k in range(2):
+                Omega.value[index + k][index + k] += 1.0 / measurement_noise
+                Omega.value[index_ + k][index_ + k] += 1.0 / measurement_noise
+                Omega.value[index + k][index_ + k] += -1.0 / measurement_noise
+                Omega.value[index_ + k][index + k] += -1.0 / measurement_noise
+                Xi.value[index + k][0]             += -sense_[j][1 + k] / measurement_noise
+                Xi.value[index_ + k][0]            +=  sense_[j][1 + k] / measurement_noise
         
+        for k in range(4):
+            Omega.value[index + k][index + k] += 1.0 / motion_noise
+        for k in range(2):
+            Omega.value[index + k][index + k + 2]     += -1.0 / motion_noise
+            Omega.value[index + k +2][index + k]      += -1.0 / motion_noise
+            Xi.value[index + k][0]                    += -move_[k] / motion_noise
+            Xi.value[index + k + 2][0]                +=  move_[k] / motion_noise
         
-    
-    
+    mu = Omega.inverse() * Xi
     return mu # Make sure you return mu for grading!
         
 ############### ENTER YOUR CODE ABOVE HERE ###################
