@@ -68,12 +68,75 @@ import random
 # passed back to your function the next time it is called. You can use
 # this to keep track of important information over time.
 def estimate_next_pos(measurement, OTHER = None):
-    """Estimate the next (x, y) position of the wandering Traxbot
-    based on noisy (x, y) measurements."""
+    print measurement
 
-    # You must return xy_estimate (x, y), and OTHER (even if it is None) 
-    # in this order for grading purposes.
+    if OTHER == None:
+
+        #angle = atan2(measurement[1], measurement[0])
+        OTHER = [0] * 4
+        prev0 = 0
+        prev1 = 0
+        current = measurement
+        OTHER[0] = prev0
+        OTHER[1] = prev1
+        OTHER[2] = current
+        OTHER[3] = 1
+        xy_estimate = current
+    else:
+
+        prev0 = OTHER[0]
+        prev1 = OTHER[1]
+        prev2 = OTHER[2]
+        n = OTHER[3]
+
+        if (n < 3):
+            OTHER[0] = prev1
+            OTHER[1] = prev2
+            OTHER[2] = measurement
+            n += 1
+            OTHER[3] = n
+            xy_estimate = measurement
+        else:
+            OTHER[0] = prev1
+            OTHER[1] = prev2
+            OTHER[2] = measurement
+
+            #print prev1, prev2, measurement
+            n += 1
+            OTHER[3] = n
+            #print prev1
+            #print prev2
+            #print measurement
+
+            v1 = (OTHER[0][0] - OTHER[1][0]), (OTHER[0][1] - OTHER[1][1])
+            v2 = (OTHER[1][0] - OTHER[2][0]), (OTHER[1][1] - OTHER[2][1])
+
+            print v1, v2
+            #print "distance " + str(distance_between(prev1, prev2))
+
+
+            num = (v1[0]*v2[0] + v1[1]*v2[1])
+            den =  sqrt(v1[0] ** 2 + v1[1] ** 2) * sqrt(v2[0] ** 2 + v2[1] ** 2)
+            
+            #print "distance v " + str(sqrt(v2[0] ** 2 + v2[1] ** 2))
+            
+            #print num/den
+            alpha = acos(-num/den)
+            #print alpha
+            #print degrees(alpha)     
+
+            #rotate v2 to get vector
+
+            x_prime = v2[0]*cos(alpha) + v2[1]*sin(alpha)
+            y_prime = -v2[0]*sin(alpha) + v2[1]*cos(alpha)
+
+            v3 = x_prime + measurement[0], y_prime + measurement[1]
+            #print v3 
+            xy_estimate = v3
+    #print slopex, slopey
+
     return xy_estimate, OTHER 
+
 
 # A helper function you may find useful.
 def distance_between(point1, point2):
